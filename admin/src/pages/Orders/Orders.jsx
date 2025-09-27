@@ -5,15 +5,13 @@ import { toast } from "react-toastify"
 import { useEffect } from 'react'
 import axios from "axios"
 import { assets } from '../../assets/assets'
-const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-const Orders = () => {
+const Orders = ({ url }) => {
 
   const [orders, setOrders] = useState([]);
 
   const fetchAllOrders = async () => {
-    const response = await axios.get(`${BASE_URL}/api/order/list`);
-
+    const response = await axios.get(url + "/api/order/list");
     if (response.data.success) {
       setOrders(response.data.data);
       console.log(response.data.data)
@@ -24,11 +22,10 @@ const Orders = () => {
   }
 
 const statusHandler = async (event, orderId) =>{
-const response = await axios.post(`${BASE_URL}/api/order/status`, {
+const response = await axios.post(url+"/api/order/status",{
   orderId,
-  status: event.target.value
-});
-
+  status:event.target.value
+})
 if(response.data.success){
   await fetchAllOrders();
 }
