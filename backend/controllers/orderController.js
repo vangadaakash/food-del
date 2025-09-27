@@ -10,6 +10,11 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 const placeOrder = async (req,res) => {
 
    const frontend_url = "https://food-del-frontend-szd7.onrender.com/";
+const clean_frontend_url = frontend_url.replace(/\/$/, "");
+
+const success_url = `${clean_frontend_url}/verify?success=true&orderId=${newOrder._id}`;
+const cancel_url = `${clean_frontend_url}/verify?success=false&orderId=${newOrder._id}`;
+
 
 
     try {
