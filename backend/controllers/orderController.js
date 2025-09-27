@@ -23,9 +23,10 @@ const clean_frontend_url = frontend_url.replace(/\/$/, "");
             address:req.body.address
         })
         await newOrder.save();
-       const success_url = `${clean_frontend_url}/verify?success=true&orderId=${newOrder._id}`;
-const cancel_url = `${clean_frontend_url}/verify?success=false&orderId=${newOrder._id}`;
+ 
         await userModel.findByIdAndUpdate(req.body.userId, {cartData:{}});
+             const success_url = `${clean_frontend_url}/verify?success=true&orderId=${newOrder._id}`;
+const cancel_url = `${clean_frontend_url}/verify?success=false&orderId=${newOrder._id}`;
 
         const line_items = req.body.items.map((item)=>({
             price_data:{
@@ -49,12 +50,13 @@ const cancel_url = `${clean_frontend_url}/verify?success=false&orderId=${newOrde
             quantity:1
         })
 
-        const session = await stripe.checkout.sessions.create({
-            line_items:line_items,
-            mode:'payment',
-            success_url:`${frontend_url}/verify?success=true&orderId=${newOrder._id}`,
-            cancel_url:`${frontend_url}/verify?success=false&orderId=${newOrder._id}`,
-        })
+       const session = await stripe.checkout.sessions.create({
+  line_items: line_items,
+  mode: 'payment',
+  success_url: success_url,
+  cancel_url: cancel_url,
+});
+
 
         res.json({success:true, session_url:session.url});
 
