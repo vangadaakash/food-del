@@ -12,8 +12,6 @@ const placeOrder = async (req,res) => {
    const frontend_url = "https://food-del-frontend-szd7.onrender.com/";
 const clean_frontend_url = frontend_url.replace(/\/$/, "");
 
-const success_url = `${clean_frontend_url}/verify?success=true&orderId=${newOrder._id}`;
-const cancel_url = `${clean_frontend_url}/verify?success=false&orderId=${newOrder._id}`;
 
 
 
@@ -25,6 +23,8 @@ const cancel_url = `${clean_frontend_url}/verify?success=false&orderId=${newOrde
             address:req.body.address
         })
         await newOrder.save();
+       const success_url = `${clean_frontend_url}/verify?success=true&orderId=${newOrder._id}`;
+const cancel_url = `${clean_frontend_url}/verify?success=false&orderId=${newOrder._id}`;
         await userModel.findByIdAndUpdate(req.body.userId, {cartData:{}});
 
         const line_items = req.body.items.map((item)=>({
